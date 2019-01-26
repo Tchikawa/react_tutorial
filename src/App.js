@@ -26,22 +26,43 @@ class App extends Component {
     })
   }
 
-  judge = () => {
-    const value = this.state.board;
-    if (
-      (value[0][0] === value[0][1] && value[0][1] === value[0][2] && value[0][0] !== '' && value[0][1] !== '' && value[0][2] !== '') ||
-      (value[1][0] === value[1][1] && value[1][1] === value[1][2] && value[1][0] !== '' && value[1][1] !== '' && value[1][2] !== '') ||
-      (value[2][0] === value[2][1] && value[2][1] === value[2][2] && value[2][0] !== '' && value[2][1] !== '' && value[2][2] !== '') ||
-      (value[0][0] === value[1][1] && value[1][1] === value[2][2] && value[0][0] !== '' && value[1][1] !== '' && value[2][2] !== '') ||
-      (value[0][2] === value[1][1] && value[1][1] === value[2][0] && value[0][2] !== '' && value[1][1] !== '' && value[2][0] !== '')
-    ) {
-      this.setState({ message: 'WINNER : ' + (this.state.player === cross ? circle : cross) })
+  judge = (player) => {
+    const lines = [
+      [
+        [0, 0], [0, 1], [0, 2]
+      ],
+      [
+        [1, 0], [1, 1], [1, 2]
+      ],
+      [
+        [2, 0], [2, 1], [2, 2]
+      ],
+      [
+        [0, 0], [1, 0], [2, 0]
+      ],
+      [
+        [0, 1], [1, 1], [2, 1]
+      ],
+      [
+        [0, 2], [1, 2], [2, 2]
+      ],
+      [
+        [0, 0], [1, 1], [2, 2]
+      ],
+      [
+        [0, 2], [1, 2], [2, 0]
+      ]
+    ].some(line => {
+      return line.every(([row, col]) => this.state.board[row][col] === player)
+    })
+    if (lines) {
+      this.setState({ message: 'WINNER : ' + player })
     }
   }
 
   componentDidUpdate(presvProps, prevState) {
     if (this.state.board !== prevState.board) {
-      this.judge();
+      this.judge(prevState.player);
     }
   }
 

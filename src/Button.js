@@ -7,7 +7,6 @@ class Button extends Component {
   }
 
   render() {
-    console.log(this.props.text)
     if (this.props.text === "" && this.props.message === null) {
       return (
         <button onClick={this.handleClick}>
